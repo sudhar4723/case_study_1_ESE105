@@ -1,0 +1,30 @@
+month_number = month(dates);
+year_number = year(dates);
+combination = month_number .* year_number;
+
+datesnums = datetime(dates, "Format",'MM-yyyy');
+
+
+a = sortrows(dataTrain((divisionLabels == 1),:));
+b = sortrows(dataTrain((divisionLabels == 2),:));
+c = sortrows(dataTrain((divisionLabels == 3),:));
+d = sortrows(dataTrain((divisionLabels == 4),:));
+e = sortrows(dataTrain((divisionLabels == 5),:));
+f = sortrows(dataTrain((divisionLabels == 6),:));
+g = sortrows(dataTrain((divisionLabels == 7),:));
+h = sortrows(dataTrain((divisionLabels == 8),:));
+%k = sortrows(dataTrain((divisionLabels == 9),:));
+
+array_index = [];
+first_month = month_number(1,1);
+first_year = year_number(1,1);
+count = 1;
+for i=2: length(month_number)
+    if ((first_month ~= month_number(1,i)) || (first_year ~= year_number(1,i)))
+       array_index(count) = i;
+       count = count + 1;
+       first_month = month_number(1,i);
+       first_year = year_number(1,i);
+        
+    end
+end
