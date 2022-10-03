@@ -13,7 +13,7 @@ plot(dataTest')
 
 [C, indx] = kmeans(CNTY_COVID, 9, 'Distance', 'correlation');
 figure
-plot(indx')
+plo(indx')
 
 
 
