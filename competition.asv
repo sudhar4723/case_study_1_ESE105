@@ -1,0 +1,10 @@
+bestCentroidsOverall
+count = 0;
+for i = 0:length(idx)
+    if idx[i] == 1:
+        
+end
+
+
+
+%J = N_correct - (0.5*130);

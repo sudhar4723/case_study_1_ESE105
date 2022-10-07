@@ -1,24 +1,63 @@
 %case study 1 script
-load("COVIDbyCounty.mat");
-CNTY_CENSUS(:,"DIVISION")
-cv = cvpartition(size(CNTY_CENSUS(:,"DIVISION")),'HoldOut',1);
+% Preload the data
+clear;
+load('COVIDbyCounty.mat');
+% Partition into training set and test set
+cv = cvpartition(size(CNTY_COVID,1),'HoldOut',0.3);
 idx = cv.test;
+% Separate to training and test data
 dataTrain = CNTY_COVID(~idx,:);
 dataTest  = CNTY_COVID(idx,:);
 
+trainingCensus = CNTY_CENSUS(idx,:);
+
+  
+
+bestClusterOverall = [];
+bestCentroidsOverall = [];
+bestSilhouetteValueOverall = 0;
+numofdegree = 10;
+converges = zeros(numofdegree);
+for degree = 2:numofdegree
+    bestCluster = [];
+    bestCentroids = [];
+    bestSilhouette = 0;
+    for i = 1:500
+        
+        [cluster, centroids] = kmeans(dataTrain, degree, "Distance","correlation",Replicates=5 );
+        [s,~] = silhouette(dataTrain,cluster,"correlation");
+        if mean(s) > bestSilhouette
+            bestSilhouette = mean(s);
+            bestCentroids = centroids;
+            bestCluster = cluster;
+        end
+    end
+    if bestSilhouette > bestSilhouetteValueOverall
+        bestSilhouetteValueOverall = bestSilhouette;
+        bestCentroidsOverall = bestCentroids;
+        bestClusterOverall = bestCluster;
+    end
+    disp(bestSilhouette)
+    converges(degree) = bestSilhouette;
+end
+
+disp(bestSilhouetteValueOverall)
 figure
-plot(dataTrain')
+plot(converges)
+
 figure
-plot(dataTest')
-
-[C, indx] = kmeans(CNTY_COVID, 9, 'Distance', 'correlation');
-figure
-plo(indx')
+silhouette(dataTrain,bestClusterOverall,"correlation");
+title('Best cluster')
 
 
 
 
-% Separate to training and test data
 
 
-%scatter plots
+
+
+
+
+
+
+

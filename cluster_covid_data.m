@@ -24,7 +24,7 @@ for degree = 2:numofdegree
     bestSilhouette = 0;
     for i = 1:500
         
-        [cluster, centroids] = kmeans(dataTrain, degree, "Distance","correlation",Replicates=5,);
+        [cluster, centroids] = kmeans(dataTrain, degree, "Distance","correlation",Replicates=5);
         [s,~] = silhouette(dataTrain,cluster,"correlation");
         if mean(s) > bestSilhouette
             bestSilhouette = mean(s);
